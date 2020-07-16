@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sezzle Calculator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script>
+        const IP_address = "http://localhost:8181";
+        var operator = null;
+
+        function clicked(arg) {
+            operator = arg.value
+            buttonsIds = ["add", "sub", "mul", "div"];
+            for (i of buttonsIds) {
+                if (i == arg.id) {
+                    document.getElementById(i).style.backgroundColor = "blue"
+                } else {
+                    document.getElementById(i).style.backgroundColor = "white"
+                }
+            }
+            
+            console.log(operator)
+        }
+
+        function operandValidation(arg) {
+            if(isNaN(arg.value)) {
+                document.getElementById("placeholder").innerText = "operand should be a number.";
+            } else document.getElementById("placeholder").innerText = "";
+        }
+
+        function performCalculation() {
+            var API = "http://localhost:8181/api/sezzle/calculator/calculate";
+            var op1 = document.getElementById("operand1");
+            var op2 = document.getElementById("operand2");
+
+            if (isNaN(op1.value) || isNaN(op2.value) || op1.value == "" || op2.value == "") {
+                document.getElementById("placeholder").innerText = "operand should be a number.";
+                return;
+            } else if (operator == null) {
+                document.getElementById("placeholder").innerText = "click atleast one operator button.";
+                return;
+            } else {
+                document.getElementById("placeholder").innerText = "";
+            }
+            
+            var formdata = new FormData();
+            formdata.append("mValue1", op1.value);
+            formdata.append("mValue2", op2.value);
+            formdata.append("mOperator", operator);
+
+            var requestOptions = {
+            method: 'POST',
+            body: formdata,
+            redirect: 'follow'
+            };
+
+            fetch("http://localhost:8181/api/sezzle/calculator/calculate/", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                document.getElementById("result").value = result
+                // document.getElementById("allCalculations").value = "ahiya aayu";
+            })
+            .catch(error => console.log('error', error))
+            .then(function() {
+                getAllCalculations();
+            });
+        }
+
+        function getAllCalculations() {
+            var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+            };
+
+            fetch("http://localhost:8181//api/sezzle/calculator/getAllCalculations", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                console.log(typeof(result))
+                document.getElementById("allCalculations").value = "";
+                for(var i = result.length - 1; i >= 0; i--) {
+                    document.getElementById("allCalculations").value += result[i] + "\n"
+                }
+                // console.log(result.length)
+                
+            })
+            .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+<body style="padding: 2%;">
+    <h1>Welcome to sezzle calculator</h1>
+    <div class="row" style="text-align: center;">
+        <div class="col-sm-3">
+            <br>
+            <a>Enter operand 1: </a>
+            <br>
+            <input id="operand1" type="text" oninput=operandValidation(operand1)>
+        </div>
+        <div class="col-sm-1">
+            <button id="add" value="+" style="width: 40px; background-color: white;" onclick=clicked(add)>+</button>
+            <br/>
+            <button id="sub" value="-" style="width: 40px; background-color: white;" onclick=clicked(sub)>-</button>
+            <br/>
+            <button id="mul" value="*" style="width: 40px; background-color: white;" onclick=clicked(mul)>*</button>
+            <br/>
+            <button id="div" value="/" style="width: 40px; background-color: white;" onclick=clicked(div)>/</button>
+        </div>
+        <div class="col-sm-3">
+            <br>
+            <a>Enter operand 2: </a>
+            <br>
+            <input id="operand2" type="text" oninput=operandValidation(operand2)>
+        </div>
+        <div class="col-sm-1">
+            <br>
+            <br>
+            <button id="equalTo" value="=" style="width: 40px; background-color: white;" onclick=performCalculation()>=</button>
+        </div>
+        <div class="col-sm-4">
+            <br>
+            <a>Answer: </a>
+            <br>
+            <input id="result" value="" type="text" readonly>
+        </div>
+        <br/>
+        <a id="placeholder"></a>
+    </div>
+
+    <div class="row" style="margin-top: 10%; height: 100%;">
+        <div class="col-sm-12" style="text-align: center;">
+            <!-- <input id="results" type="text"> -->
+            <h3>Latest results</h3>
+            <textarea id="allCalculations" style="width: 100%; height: 100%;" readonly></textarea>
+        </div>
+    </div>
+</body>
+</html>
