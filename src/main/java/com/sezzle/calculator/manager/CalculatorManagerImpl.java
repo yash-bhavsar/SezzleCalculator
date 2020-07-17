@@ -11,7 +11,8 @@ public class CalculatorManagerImpl implements ICalculatorManager {
     private static final CalculatorManagerImpl manager = new CalculatorManagerImpl();
     private final Queue<String> calculationsQueue = new LinkedList<>();
 
-    private CalculatorManagerImpl() {}
+    private CalculatorManagerImpl() {
+    }
 
     public static CalculatorManagerImpl getInstance() {
         return manager;

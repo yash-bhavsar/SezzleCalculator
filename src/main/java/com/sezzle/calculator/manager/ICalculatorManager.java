@@ -2,7 +2,6 @@ package com.sezzle.calculator.manager;
 
 import com.sezzle.calculator.model.Calculation;
 
-import java.util.Map;
 import java.util.Queue;
 
 public interface ICalculatorManager {

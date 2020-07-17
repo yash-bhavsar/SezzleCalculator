@@ -1,6 +1,5 @@
 package com.sezzle.calculator.controller;
 
-
 import com.sezzle.calculator.manager.CalculatorManagerImpl;
 import com.sezzle.calculator.manager.ICalculatorManager;
 import com.sezzle.calculator.model.Calculation;
@@ -10,23 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Queue;
 
 @RestController
 public class CalculatorController {
 
     private final ICalculatorManager manager = CalculatorManagerImpl.getInstance();
-
-//    CalculatorController () {
-//        manager = new CalculatorManagerImpl();
-//    }
-
-//    @RequestMapping("/")
-//    public String index() {
-//        return "Greetings from Yash Bhavsar!";
-//    }
 
     @PostMapping("/api/sezzle/calculator/calculate")
     public String calculate(@RequestParam Double mValue1, @RequestParam Double mValue2, @RequestParam String mOperator) {
