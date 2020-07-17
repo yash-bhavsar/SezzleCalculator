@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script>
         var operator = null;
-        const local = false;
+        const local = true;
         const address = local ? "http://localhost:8181" : "https://immense-bastion-63364.herokuapp.com";
 
         function clicked(arg) {
@@ -25,8 +25,8 @@
 
         function operandValidation(arg) {
             if(isNaN(arg.value)) {
-                document.getElementById("placeholder").innerText = "operand should be a number.";
-            } else document.getElementById("placeholder").innerText = "";
+                document.getElementById("errorPlaceholder").innerText = "ERROR: operand should be a number.";
+            } else document.getElementById("errorPlaceholder").innerText = "";
         }
 
         function performCalculation() {
@@ -35,13 +35,13 @@
             var op2 = document.getElementById("operand2");
 
             if (isNaN(op1.value) || isNaN(op2.value) || op1.value == "" || op2.value == "") {
-                document.getElementById("placeholder").innerText = "operand should be a number.";
+                document.getElementById("errorPlaceholder").innerText = "ERROR: operand should be a number.";
                 return;
             } else if (operator == null) {
-                document.getElementById("placeholder").innerText = "click atleast one operator button.";
+                document.getElementById("errorPlaceholder").innerText = "ERROR: click atleast one operator button.";
                 return;
             } else {
-                document.getElementById("placeholder").innerText = "";
+                document.getElementById("errorPlaceholder").innerText = "";
             }
             
             var formdata = new FormData();
@@ -96,7 +96,7 @@
         <div class="col-sm-3">
             <a>Enter operand 1: </a>
             <br>
-            <input id="operand1" type="text" oninput=operandValidation(operand1)>
+            <input id="operand1" type="text" oninput=operandValidation(this)>
         </div>
         <div class="col-sm-1">
             <button id="add" value="+" style="width: 50px; background-color: white; margin-right: 7%;" onclick=clicked(add)>+</button>
@@ -109,7 +109,7 @@
         <div class="col-sm-3">
             <a>Enter operand 2: </a>
             <br>
-            <input id="operand2" type="text" oninput=operandValidation(operand2)>
+            <input id="operand2" type="text" oninput=operandValidation(this)>
         </div>
         <div class="col-sm-1">
             <br>
@@ -121,13 +121,17 @@
             <input id="result" value="" type="text" readonly>
         </div>
         <br/>
-        <a id="placeholder"></a>
+        
     </div>
 
     <div class="container" style="margin-top: 7%; height: fit-content; text-align: center;">
         <!-- <input id="results" type="text"> -->
         <h3>Latest results</h3>
         <textarea id="allCalculations" rows="12" style="width: 100%; height: 100%; text-align: center;" readonly></textarea>
+    </div>
+
+    <div class="container" style="text-align: center; margin-top: 2%;">
+        <a style="font-size: medium; color: red; font-style: oblique;" value="" id="errorPlaceholder"></a>
     </div>
 </body>
 </html>
