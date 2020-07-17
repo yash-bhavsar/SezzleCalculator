@@ -1,11 +1,13 @@
 package com.sezzle.calculator.controller;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.LinkedList;
-import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,8 +52,7 @@ public class CalculatorControllerTest {
         //test the return data structure is a Linked List.
         assertEquals(controller.getAllCalculations().getClass(), LinkedList.class);
 
-        //test the size of queue is 5
-        assertEquals(controller.getAllCalculations().size(), 5);
+        assertEquals(controller.getAllCalculations().size(), 10);
 
         for (int i = 0; i < 6; i++) {
             controller.calculate(3.0, 2.0, "-");
